@@ -1,0 +1,1 @@
+This project must help you to create report from textual file with deviders. Apache POI library is used. You may control report parameters with textual file, with formatting like .ini file in Windows system.
