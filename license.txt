@@ -1,0 +1,2 @@
+This library use Apache POI (http://poi.apache.org/legal.html).
+License type is GNU Lesser General Public License (LGPL) version 2.1.

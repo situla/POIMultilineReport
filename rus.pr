@@ -1,0 +1,93 @@
+# This is the POIRealize property file example
+# Document Title
+DocumentTitle=Спецификация
+AddSourceFileName=true
+AddCurrentDate=true
+
+# The name of document charset 
+CharsetName=CP1251
+
+# Columns count for Excel file
+ColumnCount=5
+
+# If this property true page orient is landscape, false - portrait
+Landscape=true
+
+# -1 is a Title document marker
+FontName-1=Arial
+FontSize-1=14
+FontBold-1=false
+
+# -2 is a table header marker
+FontName-2=TimesNewRoman
+FontSize-2=10
+FontBold-2=false
+HorizontalAlignment-2=CENTER
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop-2=MEDIUM
+BorderLeft-2=MEDIUM
+BorderRight-2=MEDIUM
+BorderBottom-2=MEDIUM
+Values-2=Naimenovanie$K-vo$Pozic.$Prim$NN
+
+# First column section
+FontName0=TimesNewRoman
+FontSize0=10
+FontBold0=false
+HorizontalAlignment0=LEFT
+ColumnWidth0=11500
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop0=THIN
+#BorderLeft0=DASH_DOT
+BorderLeft0=THIN
+BorderRight0=THIN
+BorderBottom0=THIN
+
+# Column 2 section
+#FontName1=Courier
+FontName1=TimesNewRoman
+FontSize1=10
+FontBold1=false
+HorizontalAlignment1=CENTER
+ColumnWidth1=1000
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop1=THIN
+BorderLeft1=THIN
+BorderRight1=THIN
+BorderBottom1=THIN
+
+# Column 3 section
+FontName2=TimesNewRoman
+FontSize2=10
+FontBold2=false
+HorizontalAlignment2=LEFT
+ColumnWidth2=7000
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop2=THIN
+BorderLeft2=THIN
+BorderRight2=THIN
+BorderBottom2=THIN
+
+# Column 4 section
+FontName3=TimesNewRoman
+FontSize3=10
+FontBold3=false
+HorizontalAlignment3=LEFT
+ColumnWidth3=10000
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop3=THIN
+BorderLeft3=THIN
+BorderRight3=THIN
+BorderBottom3=THIN
+
+# Column 5 section
+FontName4=TimesNewRoman
+FontSize4=10
+FontBold4=false
+HorizontalAlignment4=CENTER
+ColumnWidth4=1500
+# https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/BorderStyle.html
+BorderTop4=THIN
+BorderLeft4=THIN
+BorderRight4=THIN
+BorderBottom4=THIN
