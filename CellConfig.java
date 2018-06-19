@@ -33,6 +33,11 @@ public class CellConfig {
 
     // Horizontal Alignment section
     private String horizontal_alignment;
+    
+    // cell_type may be numeric, formula or string.
+    // we are use string or formula
+    private String cell_type;
+    private String formula;
 
     CellConfig() {
 
@@ -48,6 +53,8 @@ public class CellConfig {
 
         horizontal_alignment = "LEFT";
         column_width = 5000;
+        cell_type = "string";
+        formula = "";
     }
 
     public void setFontName(String font_name) {
@@ -121,12 +128,31 @@ public class CellConfig {
     public Short getColumnWidth() {
         return column_width;
     }
+    
+    public void setCellType(String cell_type) {
+        this.cell_type = cell_type;
+    }
+
+    public String getCellType() {
+        return cell_type;
+    }
+
+    public void setFormula (String formula) {
+        this.formula = formula;
+    }
+
+    public String getFormula() {
+        return formula;
+    }
 
     public String toString() {
-        return "State of cells: \n" + "Font: " + font_name + " " + font_size.toString() + " " + font_bold.toString() + "\n" +
+        String frml = (this.formula.equals("")) ? "\n" : "\n" + this.formula ;
+        return "STATE OF CELLS: \n" + "Font: " + font_name + " " + font_size.toString() + " " + font_bold.toString() + "\n" +
                 "Borders: " + border_bottom + ", " + border_left + ", " + border_right + ", " + border_top + "\n" +
                 "Alignment: " + horizontal_alignment + "\n" +
-                "Column width: " + column_width;
+                "Column width: " + column_width + "\n" +
+                "Cell type: " + cell_type +
+                frml;
 
     }
 

@@ -46,7 +46,7 @@ public class POIMultilineReport {
     private StringTokenizer st;
 
     private String line = null;
-    private short rownum;
+    private Short rownum;
     private short cellnum;
 
    /**
@@ -193,6 +193,12 @@ public class POIMultilineReport {
             if (!getValueFromPropertyFile("BorderBottom"+i.toString(), property_file).equals("err"))
                 cell_config.setBorderBottom(getValueFromPropertyFile("BorderBottom"+i.toString(), property_file));
 
+            if (!getValueFromPropertyFile("CellType"+i.toString(), property_file).equals("err"))
+                cell_config.setCellType(getValueFromPropertyFile("CellType"+i.toString(), property_file));
+
+            if (!getValueFromPropertyFile("CellFormula"+i.toString(), property_file).equals("err"))
+                cell_config.setFormula(getValueFromPropertyFile("CellFormula"+i.toString(), property_file));
+
             //System.out.println(getValueFromPropertyFile("ColumnWidth"+i.toString(), property_file));
             column_cell_config.put(i, cell_config);
 
@@ -232,9 +238,11 @@ public class POIMultilineReport {
                 cell_config.setBorderLeft(column_cell_config.get(i).getBorderLeft());
                 cell_config.setBorderRight(column_cell_config.get(i).getBorderRight());
                 cell_config.setBorderBottom(column_cell_config.get(i).getBorderBottom());
+                cell_config.setCellType(column_cell_config.get(i).getCellType());
+                cell_config.setFormula(column_cell_config.get(i).getFormula());
             }
 
-            System.out.println("Column " + i.toString() + "\n--------------\n" + cell_config.toString()  + "\n--------------\n");
+            //System.out.println("Column " + i.toString() + "\n--------------\n" + cell_config.toString()  + "\n--------------\n");
 
             font_column = wb.createFont();
 
@@ -289,7 +297,7 @@ public class POIMultilineReport {
                 cell_config.setBorderBottom(column_cell_config.get(i).getBorderBottom());
             }
 
-            System.out.println("Column " + i.toString() + "\n--------------\n" + cell_config.toString()  + "\n--------------\n");
+            //System.out.println("Column " + i.toString() + "\n--------------\n" + cell_config.toString()  + "\n--------------\n");
 
             font_column = wb.createFont();
 
@@ -467,20 +475,28 @@ public class POIMultilineReport {
         
         a[j] = st.nextToken();
         cellnum = (short) j;
-            // create new cell
-            c = r.createCell(cellnum);
+        // create new cell
+        c = r.createCell(cellnum);
             
-            if (print_row_num%2 == 0) {
-                c.setCellStyle(column_cell_style.get(j));    
-            } else c.setCellStyle(column_cell_style_even.get(j));
+        if (print_row_num%2 == 0) {
+            c.setCellStyle(column_cell_style.get(j));    
+        } else c.setCellStyle(column_cell_style_even.get(j));
 
 
-            //s.setColumnWidth((short) cellnum, (short)5000);
-            s.setColumnWidth((short) cellnum, column_cell_config.get(j).getColumnWidth());
+        //s.setColumnWidth((short) cellnum, (short)5000);
+        s.setColumnWidth((short) cellnum, column_cell_config.get(j).getColumnWidth());
 
-            // TODO formula or text ...
-        
-        c.setCellValue(a[j]);
+        // TODO formula or text ...
+        if ( column_cell_config.get(j).getCellType().equals("formula") ) {
+            c.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+            //String formula = "$E$2*B" + (rownum + 1)+""; 
+            Short temp = rownum;
+            temp++;
+            String formula = column_cell_config.get(j).getFormula().replace ("?", temp.toString()); 
+            //System.out.println(formula);
+
+            c.setCellFormula(formula); 
+        } else    c.setCellValue(a[j]);
         
       }
       rownum++;
@@ -513,7 +529,7 @@ public class POIMultilineReport {
                 good_args_count++;
             }
         }
-        if (good_args_count != 2) throw new IllegalArgumentException("Wrong arguments!\nUsage must be:\n'java ru.learn2prog.poi.POIMultilineReport -f filename.csv -p property.file'\nwhere property.file is a file with main autoreplace rules");
+        if (good_args_count != 2) throw new IllegalArgumentException("Wrong arguments!\nUsage must be:\n'java ru.learn2prog.poi.POIMultilineReport -f filename.csv -p property.file'\nwhere -property.file- is a file with report settings.");
                 
         new POIMultilineReport (csv_file, property_file);
         
