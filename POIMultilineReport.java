@@ -32,6 +32,14 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.IndexedColors;
+//import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
+//import org.apache.poi.ss.formula.EvaluationConditionalFormatRule;
+
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 
@@ -48,6 +56,7 @@ public class POIMultilineReport {
     private String line = null;
     private Short rownum;
     private short cellnum;
+    public static final String PRG_VERSION="v0.11";
 
    /**
     * Method returns the value of a property by some key
@@ -386,6 +395,7 @@ public class POIMultilineReport {
             
                 val += " " + getFilenamePart(fileName);
             }
+
                 
             if (getValueFromPropertyFile("AddCurrentDate", property_file).equals("true")) {
                 
@@ -395,6 +405,11 @@ public class POIMultilineReport {
                 val += " (" + formatForDateNow.format(dateNow) + ")";
             }    
             
+            if (getValueFromPropertyFile("AddPrgVersion", property_file).equals("true")) {
+            
+                val += " " + PRG_VERSION;
+            }
+
             c.setCellValue(val);
         }
     
@@ -478,11 +493,15 @@ public class POIMultilineReport {
         // create new cell
         c = r.createCell(cellnum);
             
-        if (print_row_num%2 == 0) {
+        // one line so different another
+        /*if (print_row_num%2 == 0) {
             c.setCellStyle(column_cell_style.get(j));    
         } else c.setCellStyle(column_cell_style_even.get(j));
+        */
+        // one style for all cells
+        c.setCellStyle(column_cell_style.get(j));    
 
-
+        
         //s.setColumnWidth((short) cellnum, (short)5000);
         s.setColumnWidth((short) cellnum, column_cell_config.get(j).getColumnWidth());
 
@@ -502,6 +521,36 @@ public class POIMultilineReport {
       rownum++;
       print_row_num++;
      
+    }
+
+    // set even/odd colors difference
+    if (!getValueFromPropertyFile("LineColorsDifference", property_file).equals("err")) {
+        if (getValueFromPropertyFile("LineColorsDifference", property_file).equals("true")) {
+            // formatting through the line
+            SheetConditionalFormatting sheetCF = s.getSheetConditionalFormatting();
+            ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("ISODD(ROW($A3)-ROW($A$2))");
+            PatternFormatting fill1 = rule1.createPatternFormatting();
+            
+            if (!getValueFromPropertyFile("EvenLineColor", property_file).equals("err")) {
+                //fill1.setFillBackgroundColor(IndexedColors.PALE_BLUE.index);
+                //fill1.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.valueOf("PALE_BLUE").getIndex());
+                try {
+                    fill1.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.valueOf(getValueFromPropertyFile("EvenLineColor", property_file)).getIndex());
+                }
+                catch (java.lang.IllegalArgumentException iae) {
+                    fill1.setFillBackgroundColor(IndexedColors.PALE_BLUE.index);
+                }
+            }
+            else fill1.setFillBackgroundColor(IndexedColors.PALE_BLUE.index);
+
+            fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+
+            CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("A3:E" + rownum.toString())
+            };
+
+            sheetCF.addConditionalFormatting(regions, rule1);
+        }
     }
     
     in.close();
